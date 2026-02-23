@@ -6,10 +6,12 @@ yeah it works on windows
 
 - ESP8266 toolchain for Windows
   - https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-win32.zip
+  - this'll eventually go in `C:\msys64\opt`
 
 - espressif/ESP8266_RTOS_SDK GitHub
   - https://github.com/espressif/ESP8266_RTOS_SDK.git
   - note: to clone this, you need `git clone --recurse-submodules https://github.com/espressif/ESP8266_RTOS_SDK.git`
+  - you cau use `rundll32 sysdm.cpl,EditEnvironmentVariables` to set `%IDF_PATH%` easier
 
 - ESP8266 RTOS SDK Programming Guide
   - https://docs.espressif.com/projects/esp8266-rtos-sdk/en/latest/get-started/
@@ -17,31 +19,22 @@ yeah it works on windows
 
 - MSYS2
   - https://www.msys2.org/
+  
+### msys2 mingw64
 
-### download some stuff
-install em with `pacman -U <the-whole-ass-file-name>`
+install the python packages:
 
-you can also find them in the `some-packages` folder
+```
+pacman -S mingw-w64-x86_64-python-click mingw-w64-x86_64-python-pyserial mingw-w64-x86_64-python-future mingw-w64-x86_64-python-cryptography mingw-w64-x86_64-python-pyparsing mingw-w64-x86_64-python-pyelftools
+```
 
-- click
-  - https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-python-click-8.1.8-1-any.pkg.tar.zst
+get rid of a warning when we run `make` later:
 
-- pyserial
-  - https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-python-pyserial-3.5-3-any.pkg.tar.zst
+```
+sed -i s,MINGW32,MINGW64,g $IDF_PATH/make/project.mk
+```
 
-- future
-  - https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-python-future-0.18.3-2-any.pkg.tar.zst
-
-- the cryptography dependency tree is kind of a bitch
-  - https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-python-pycparser-2.22-2-any.pkg.tar.zst
-  - https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-python-cffi-1.17.1-2-any.pkg.tar.zst
-  - https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-python-cryptography-42.0.8-3-any.pkg.tar.zst
-
-- pyparsing
-  - https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-python-pyparsing-3.2.5-1-any.pkg.tar.zst
-
-- pyelftools
-  - https://repo.msys2.org/mingw/mingw32/mingw-w64-i686-python-pyelftools-0.31-2-any.pkg.tar.zst
+if you *gotta* use mingw32, check [for-mingw32-enjoyers.md](for-mingw32-enjoyers.md)
 
 ### fix python errors
 
@@ -62,16 +55,17 @@ export PYTHONPATH='C:/msys64/usr/lib/python3.12/site-packages'
 
 `cd` to your project folder
 
-`make menuconfig` doesnt work, so you'll have to edit the sdkconfig file by-hand after running `make defconfig` (have fun with that)
+if you wanna use `make menuconfig`, there's instructions in [howto-make-menuconfig.md](howto-make-menuconfig.md)
 
-```
-make defconfig
-make
-```
+otherwise, you'll have to edit the sdkconfig file by-hand after running `make defconfig` (have fun with that)
 
 - you can flash it using Espressif Flash Download Tool
   - https://docs.espressif.com/projects/esp-test-tools/en/latest/esp32/production_stage/tools/flash_download_tool.html
   - it's also in the `flashtool` folder
 
 - or you can use the esptool binary
-  - https://github.com/espressif/esptool/releases  
+  - https://github.com/espressif/esptool/releases
+
+### the Eclipse template
+
+it works pretty well, imo.
