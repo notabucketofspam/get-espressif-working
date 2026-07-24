@@ -66,6 +66,10 @@ otherwise, you'll have to edit the sdkconfig file by-hand after running `make de
 - or you can use the esptool binary
   - https://github.com/espressif/esptool/releases
 
+- or you can use `make flash`
+  - gotta set the COM port in `menuconfig`, in that case
+  - the COM port should be written the same as how it shows up in Windows Device Manager
+
 ### the Eclipse template
 
 it works pretty well, imo.
