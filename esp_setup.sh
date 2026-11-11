@@ -19,17 +19,10 @@ unzip "xtensa-lx106-elf-gcc8_4_0-esp-2020r3-win32.zip"
 git -C ESP8266_RTOS_SDK pull || git clone --recurse-submodules https://github.com/espressif/ESP8266_RTOS_SDK.git
 
 # some config
-if test -z $IDF_PATH; then
+if test $IDF_PATH != '/opt/ESP8266_RTOS_SDK'; then
 	export IDF_PATH=/opt/ESP8266_RTOS_SDK
 	echo "export IDF_PATH=/opt/ESP8266_RTOS_SDK">> ~/.bashrc
 fi
-
-# get rid of a warning
-sed -i s,MINGW32,MINGW64,g "$IDF_PATH/make/project.mk"
-
-# fix python errors
-sed -i '1i\import sys'  "$IDF_PATH/tools/check_python_dependencies.py"
-sed -i '1a\sys.exit(0)' "$IDF_PATH/tools/check_python_dependencies.py"
 if test $PYTHONPATH != 'C:/msys64/usr/lib/python3.12/site-packages'; then
 	export PYTHONPATH='C:/msys64/usr/lib/python3.12/site-packages'
 	echo "export PYTHONPATH='C:/msys64/usr/lib/python3.12/site-packages'">> ~/.bashrc
