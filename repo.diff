@@ -1,0 +1,102 @@
+diff --git a/components/coap/libcoap b/components/coap/libcoap
+--- a/components/coap/libcoap
++++ b/components/coap/libcoap
+@@ -1 +1 @@
+-Subproject commit 0dbccca06c3ea75a20ef0a51633eb424a35b5e2a
++Subproject commit 0dbccca06c3ea75a20ef0a51633eb424a35b5e2a-dirty
+diff --git a/components/spi_flash/CMakeLists.txt b/components/spi_flash/CMakeLists.txt
+index 255eff8e..287e63c1 100644
+--- a/components/spi_flash/CMakeLists.txt
++++ b/components/spi_flash/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-set(srcs "src/partition"
++set(srcs "src/partition.c"
+          "src/spi_flash_raw.c"
+          "src/spi_flash.c")
+ if(BOOTLOADER_BUILD)
+diff --git a/make/project.mk b/make/project.mk
+index c06835b2..e272e89a 100644
+--- a/make/project.mk
++++ b/make/project.mk
+@@ -61,8 +61,8 @@ $(warning esp-idf build system only supports GNU Make versions 3.81 or newer. Yo
+ endif
+ 
+ ifdef MSYSTEM
+-ifneq ("$(MSYSTEM)","MINGW32")
+-$(warning esp-idf build system only supports MSYS2 in "MINGW32" mode. Consult the ESP-IDF documentation for details.)
++ifneq ("$(MSYSTEM)","MINGW64")
++$(warning esp-idf build system only supports MSYS2 in "MINGW64" mode. Consult the ESP-IDF documentation for details.)
+ endif
+ endif  # MSYSTEM
+ 
+diff --git a/tools/check_python_dependencies.py b/tools/check_python_dependencies.py
+index e2b58b29..4773a227 100755
+--- a/tools/check_python_dependencies.py
++++ b/tools/check_python_dependencies.py
+@@ -17,6 +17,7 @@
+ import argparse
+ import os
+ import sys
++sys.exit(0)
+ 
+ try:
+     import pkg_resources
+diff --git a/tools/kconfig/confdata.c b/tools/kconfig/confdata.c
+index 70f6ab7f..5ef5f06e 100644
+--- a/tools/kconfig/confdata.c
++++ b/tools/kconfig/confdata.c
+@@ -819,6 +819,9 @@ next:
+ 	if (*tmpname) {
+ 		strcat(dirname, basename);
+ 		strcat(dirname, ".old");
++#ifdef WIN32
++		unlink(dirname);
++#endif
+ 		rename(newname, dirname);
+ 		if (rename(tmpname, newname))
+ 			return 1;
+diff --git a/tools/kconfig/lxdialog/util.c b/tools/kconfig/lxdialog/util.c
+index f7abdeb9..d31c0fe0 100644
+--- a/tools/kconfig/lxdialog/util.c
++++ b/tools/kconfig/lxdialog/util.c
+@@ -566,6 +566,10 @@ int on_key_esc(WINDOW *win)
+ 	nodelay(win, TRUE);
+ 	keypad(win, FALSE);
+ 	key = wgetch(win);
++#ifdef WIN32
++    if (key == ERR)
++	    return KEY_ESC;
++#endif
+ 	key2 = wgetch(win);
+ 	do {
+ 		key3 = wgetch(win);
+diff --git a/tools/kconfig/symbol.c b/tools/kconfig/symbol.c
+index 25cf0c2c..ae689fec 100644
+--- a/tools/kconfig/symbol.c
++++ b/tools/kconfig/symbol.c
+@@ -7,7 +7,9 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <regex.h>
++#ifndef _WIN32
+ #include <sys/utsname.h>
++#endif
+ 
+ #include "lkc.h"
+ 
+@@ -44,6 +46,7 @@ static void sym_add_default(struct symbol *sym, const char *def)
+ 
+ void sym_init(void)
+ {
++#ifndef _WIN32
+ 	struct symbol *sym;
+ 	struct utsname uts;
+ 	static bool inited = false;
+@@ -58,6 +61,7 @@ void sym_init(void)
+ 	sym->type = S_STRING;
+ 	sym->flags |= SYMBOL_AUTO;
+ 	sym_add_default(sym, uts.release);
++#endif
+ }
+ 
+ enum symbol_type sym_get_type(struct symbol *sym)
