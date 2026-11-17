@@ -24,7 +24,6 @@ git -C ESP8266_RTOS_SDK pull || git clone --recurse-submodules https://github.co
 # apply the git diff
 git -C ESP8266_RTOS_SDK apply --reverse --check - <<< "$REPO_DIFF" 2>/dev/null || git -C ESP8266_RTOS_SDK apply - <<< "$REPO_DIFF"
 
-
 # some config
 if grep -v -q "/opt/xtensa-lx106-elf/bin" <<< "$PATH"; then  
   export PATH="$PATH:/opt/xtensa-lx106-elf/bin"
@@ -39,9 +38,7 @@ if test "$PYTHONPATH" != "$PYTHONPATH_DESIRED"; then
 	export PYTHONPATH="'$PYTHONPATH_DESIRED'"
 	echo "export PYTHONPATH='$PYTHONPATH_DESIRED'">> ~/.bashrc
 fi
-
 CMD_RESULT="$(cmd //c 'echo %IDF_PATH%')"
-
 if grep -v -q '/opt/ESP8266_RTOS_SDK' <<< "$CMD_RESULT"; then
 	cat <<EOF
 ========================================
@@ -58,4 +55,5 @@ fi
 # basically done
 echo '========================================'
 echo "Ok cool. The MSYS2 setup is complete."
-read -rsn1 -p "Press any key to continue . . ."
+read -rsn1 -p 'Press any key to continue . . .'
+
