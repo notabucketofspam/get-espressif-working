@@ -1,9 +1,3 @@
-diff --git a/components/coap/libcoap b/components/coap/libcoap
---- a/components/coap/libcoap
-+++ b/components/coap/libcoap
-@@ -1 +1 @@
--Subproject commit 0dbccca06c3ea75a20ef0a51633eb424a35b5e2a
-+Subproject commit 0dbccca06c3ea75a20ef0a51633eb424a35b5e2a-dirty
 diff --git a/components/spi_flash/CMakeLists.txt b/components/spi_flash/CMakeLists.txt
 index 255eff8e..287e63c1 100644
 --- a/components/spi_flash/CMakeLists.txt
@@ -15,7 +9,7 @@ index 255eff8e..287e63c1 100644
           "src/spi_flash.c")
  if(BOOTLOADER_BUILD)
 diff --git a/make/project.mk b/make/project.mk
-index c06835b2..e272e89a 100644
+index c06835b2..e06837c0 100644
 --- a/make/project.mk
 +++ b/make/project.mk
 @@ -61,8 +61,8 @@ $(warning esp-idf build system only supports GNU Make versions 3.81 or newer. Yo
@@ -24,8 +18,8 @@ index c06835b2..e272e89a 100644
  ifdef MSYSTEM
 -ifneq ("$(MSYSTEM)","MINGW32")
 -$(warning esp-idf build system only supports MSYS2 in "MINGW32" mode. Consult the ESP-IDF documentation for details.)
-+ifneq ("$(MSYSTEM)","MINGW64")
-+$(warning esp-idf build system only supports MSYS2 in "MINGW64" mode. Consult the ESP-IDF documentation for details.)
++ifneq ("$(MSYSTEM)","UCRT64")
++$(warning esp-idf build system only supports MSYS2 in "UCRT64" mode. Consult the ESP-IDF documentation for details.)
  endif
  endif  # MSYSTEM
  
