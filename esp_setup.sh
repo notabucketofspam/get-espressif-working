@@ -39,7 +39,7 @@ if test "$PYTHONPATH" != "$PYTHONPATH_DESIRED"; then
 	echo "export PYTHONPATH='$PYTHONPATH_DESIRED'">> ~/.bashrc
 fi
 
-CMD_RESULT="$(cmd //c \"echo %IDF_PATH%\")"
+CMD_RESULT="$(cmd //c 'echo %IDF_PATH%')"
 
 if grep -v -q '/opt/ESP8266_RTOS_SDK' <<< "$CMD_RESULT"; then
 	cat <<EOF
@@ -55,11 +55,6 @@ EOF
 fi
 
 # basically done
-echo "====================================="
+echo '========================================'
 echo "Ok cool. The MSYS2 setup is complete."
-echo "Don't forget that you still need to set %IDF_PATH% in Windows."
-echo "Open an Administrator Command Prompt and do:"
-echo
-echo 'SETX IDF_PATH C:\msys64\opt\ESP8266_RTOS_SDK /m'
-echo
 read -rsn1 -p "Press any key to continue . . ."
