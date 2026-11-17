@@ -22,7 +22,8 @@ unzip -n "xtensa-lx106-elf-gcc8_4_0-esp-2020r3-win32.zip"
 git -C ESP8266_RTOS_SDK pull || git clone --recurse-submodules https://github.com/espressif/ESP8266_RTOS_SDK.git
 
 # apply the git diff
-git -C ESP8266_RTOS_SDK apply - <<< "$REPO_DIFF"
+git -C ESP8266_RTOS_SDK apply --reverse --check - <<< "$REPO_DIFF" 2>/dev/null || git -C ESP8266_RTOS_SDK apply - <<< "$REPO_DIFF"
+
 
 # some config
 if grep -v -q "/opt/xtensa-lx106-elf/bin" <<< "$PATH"; then  
