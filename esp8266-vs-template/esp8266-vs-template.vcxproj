@@ -14,8 +14,8 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{0E1629D2-427B-8ACD-C0B2-32B3EB7F7D9C}</ProjectGuid>
     <Keyword>MakeFileProj</Keyword>
-    <RootNamespace>esp8266-vs-template</RootNamespace>
-    <ProjectName>esp8266-vs-template</ProjectName>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <ProjectName>$(MSBuildProjectName)</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

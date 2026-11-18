@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := esp8266-vs-template
+PROJECT_NAME := $(notdir $(CURDIR))
 
 include $(IDF_PATH)/make/project.mk
 
