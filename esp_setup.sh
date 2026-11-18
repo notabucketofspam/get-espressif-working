@@ -14,7 +14,7 @@ cd /opt
 
 # you get somefiles
 pacman -Syu --noconfirm
-pacman -S --needed --noconfirm unzip gcc make git pkg-config python3 wget perl gettext-devel
+pacman -S --needed --noconfirm unzip gcc make git pkg-config python3 wget perl gettext-devel flex bison gperf
 pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-python-click mingw-w64-ucrt-x86_64-python-pyserial mingw-w64-ucrt-x86_64-python-future mingw-w64-ucrt-x86_64-python-cryptography mingw-w64-ucrt-x86_64-python-pyparsing mingw-w64-ucrt-x86_64-python-pyelftools
 
 wget --no-clobber "https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-win32.zip"
