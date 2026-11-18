@@ -1,0 +1,7 @@
+@ECHO off
+TITLE %~n0
+SETLOCAL
+CALL make-clean
+CALL make-all
+ENDLOCAL
+ECHO DONE %~n0
