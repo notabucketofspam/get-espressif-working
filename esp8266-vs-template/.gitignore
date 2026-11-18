@@ -1,0 +1,6 @@
+build/
+sdkconfig
+sdkconfig.old
+esp8266_intellisense.props
+x64/
+*.user

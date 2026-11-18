@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{0E1629D2-427B-8ACD-C0B2-32B3EB7F7D9C}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+    <RootNamespace>esp8266-vs-template</RootNamespace>
+    <ProjectName>esp8266-vs-template</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <!-- ===================================================================== -->
+  <!-- 1. Espressif & MSYS2 UCRT64 Paths (Translated from Eclipse settings)  -->
+  <!-- ===================================================================== -->
+  <PropertyGroup Label="EspressifEnv">
+    <MsysRoot>C:\msys64</MsysRoot>
+    <!-- Forward slashes required by ESP8266_RTOS_SDK GNU Makefiles -->
+    <IdfPathUnix>C:/msys64/opt/ESP8266_RTOS_SDK</IdfPathUnix>
+    <XtensaBin>C:\msys64\opt\xtensa-lx106-elf\bin</XtensaBin>
+    <EspEnvSetup>set "PATH=$(MsysRoot)\ucrt64\bin;$(MsysRoot)\usr\bin;$(XtensaBin);%PATH%" &amp;&amp; set "IDF_PATH=$(IdfPathUnix)" &amp;&amp; set "BATCH_BUILD=1" &amp;&amp; set "MSYSTEM=UCRT64"</EspEnvSetup>
+  </PropertyGroup>
+  <!-- ===================================================================== -->
+  <!-- 2. NMake Build / Rebuild / Clean Commands                             -->
+  <!-- ===================================================================== -->
+  <PropertyGroup>
+    <NMakeBuildCommandLine>$(EspEnvSetup) &amp;&amp; python eclipse_make.py -j</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(EspEnvSetup) &amp;&amp; python eclipse_make.py clean &amp;&amp; python eclipse_make.py -j</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>$(EspEnvSetup) &amp;&amp; python eclipse_make.py clean</NMakeCleanCommandLine>
+    <NMakeOutput>$(ProjectDir)build\$(ProjectName).elf</NMakeOutput>
+    <!-- =================================================================== -->
+    <!-- 3. IntelliSense Include Paths & Preprocessor Defines                -->
+    <!-- =================================================================== -->
+    <NMakePreprocessorDefinitions>__XTENSA__;__ets__;ICACHE_FLASH;ESP_PLATFORM;HAVE_CONFIG_H;GCC_NOT_5_2_0=1;WITH_POSIX;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)build\include;$(ProjectDir)main;$(IdfPathUnix)\components\esp8266\include;$(IdfPathUnix)\components\freertos\include;$(IdfPathUnix)\components\freertos\port\esp8266\include;$(IdfPathUnix)\components\freertos\port\esp8266\include\freertos;$(IdfPathUnix)\components\log\include;$(IdfPathUnix)\components\nvs_flash\include;$(IdfPathUnix)\components\spi_flash\include;$(IdfPathUnix)\components\tcpip_adapter\include;$(IdfPathUnix)\components\lwip\lwip\src\include;$(IdfPathUnix)\components\lwip\port\esp8266\include;$(IdfPathUnix)\components\newlib\include;$(IdfPathUnix)\components\newlib\platform_include;$(IdfPathUnix)\components\heap\include;$(IdfPathUnix)\components\heap\port\esp8266\include;$(IdfPathUnix)\components\bootloader_support\include;$(IdfPathUnix)\components\app_update\include;$(IdfPathUnix)\components\util\include;$(MsysRoot)\opt\xtensa-lx106-elf\xtensa-lx106-elf\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <AdditionalOptions>/std:c11</AdditionalOptions>
+  </PropertyGroup>
+  <!-- ===================================================================== -->
+  <!-- 4. Custom MSBuild Target: Flash Firmware ("Build -> FlashESP8266")    -->
+  <!-- ===================================================================== -->
+  <Target Name="FlashESP8266">
+    <Exec Command="$(EspEnvSetup) &amp;&amp; python eclipse_make.py -j flash" WorkingDirectory="$(ProjectDir)" />
+  </Target>
+  <!-- Project Source Files -->
+  <ItemGroup>
+    <ClCompile Include="main\main.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+    <None Include="partitions.csv" />
+    <None Include="eclipse_make.py" />
+    <None Include="main\component.mk" />
+    <None Include="main\Kconfig.projbuild" />
+  </ItemGroup>
+  <Import Project="esp8266_intellisense.props" Condition="Exists('esp8266_intellisense.props')" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
