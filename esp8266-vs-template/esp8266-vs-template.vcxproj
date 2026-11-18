@@ -70,6 +70,7 @@
     <None Include="eclipse_make.py" />
     <None Include="main\component.mk" />
     <None Include="main\Kconfig.projbuild" />
+    <None Include="cpp.hint"/>
   </ItemGroup>
   <Import Project="esp8266_intellisense.props" Condition="Exists('esp8266_intellisense.props')" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

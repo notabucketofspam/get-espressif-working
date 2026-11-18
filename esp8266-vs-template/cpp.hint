@@ -1,0 +1,8 @@
+#define configSTACK_DEPTH_TYPE unsigned short
+#define PRIVILEGED_FUNCTION
+#define PRIVILEGED_DATA
+#define portDONT_DISCARD
+#define IRAM_ATTR
+#define DRAM_ATTR
+#define ICACHE_FLASH_ATTR
+#define ICACHE_RODATA_ATTR
