@@ -44,6 +44,13 @@ def main():
     if os.path.exists(xtensa_sys_inc):
         includes.add(xtensa_sys_inc)
 
+    gcc_lib_root = Path(r"C:\msys64\opt\xtensa-lx106-elf\lib\gcc\xtensa-lx106-elf")
+    if gcc_lib_root.exists():
+        for gcc_inc in gcc_lib_root.glob("*/include"):
+            includes.add(str(gcc_inc))
+        for gcc_inc_fixed in gcc_lib_root.glob("*/include-fixed"):
+            includes.add(str(gcc_inc_fixed))
+
     defines = [
         "__XTENSA__",
         "__ets__",
@@ -53,6 +60,20 @@ def main():
         "GCC_NOT_5_2_0=1",
         "WITH_POSIX",
         "__GNUC__=8",
+        "__INT8_TYPE__=signed char",
+        "__UINT8_TYPE__=unsigned char",
+        "__INT16_TYPE__=short int",
+        "__UINT16_TYPE__=short unsigned int",
+        "__INT32_TYPE__=int",
+        "__UINT32_TYPE__=unsigned int",
+        "__INT64_TYPE__=long long int",
+        "__UINT64_TYPE__=long long unsigned int",
+        "__SIZE_TYPE__=unsigned int",
+        "__PTRDIFF_TYPE__=int",
+        "__INTPTR_TYPE__=int",
+        "__UINTPTR_TYPE__=unsigned int",
+        "__builtin_va_list=char*",
+        "__builtin_expect(x,y)=(x)",
         "__attribute__(x)=",
         "__extension__=",
         "__inline__=inline",
@@ -71,10 +92,18 @@ def main():
     def_el = ET.SubElement(pg, f"{{{ns}}}NMakePreprocessorDefinitions")
     def_el.text = ";".join(defines) + ";$(NMakePreprocessorDefinitions)"
 
+    forced_includes = []
     sdkconfig_h = os.path.abspath("build/include/sdkconfig.h")
     if os.path.exists(sdkconfig_h):
+        forced_includes.append(sdkconfig_h)
+
+    newlib_stdint = os.path.join(xtensa_sys_inc, "stdint.h")
+    if os.path.exists(newlib_stdint):
+        forced_includes.append(newlib_stdint)
+
+    if forced_includes:
         fi_el = ET.SubElement(pg, f"{{{ns}}}NMakeForcedIncludes")
-        fi_el.text = f"{sdkconfig_h};$(NMakeForcedIncludes)"
+        fi_el.text = ";".join(forced_includes) + ";$(NMakeForcedIncludes)"
 
     tree = ET.ElementTree(project)
     ET.indent(tree, space="  ")
