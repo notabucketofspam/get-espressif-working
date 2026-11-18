@@ -14,11 +14,57 @@ cd /opt
 
 # you get somefiles
 pacman -Syu --noconfirm
-pacman -S --needed --noconfirm unzip gcc make git pkg-config python3 wget perl gettext-devel flex bison gperf
-pacman -S --needed --noconfirm mingw-w64-ucrt-x86_64-python-click mingw-w64-ucrt-x86_64-python-pyserial mingw-w64-ucrt-x86_64-python-future mingw-w64-ucrt-x86_64-python-cryptography mingw-w64-ucrt-x86_64-python-pyparsing mingw-w64-ucrt-x86_64-python-pyelftools
 
+# MSYS exclusive
+pacman -S --needed --noconfirm \
+unzip \
+pkgconf \
+flex \
+bison \
+ncurses-devel \
+gettext-devel \
+python-devel \
+;
+
+# MSYS packages
+pacman -S --needed --noconfirm \
+gcc \
+make \
+git \
+wget \
+gperf \
+ncurses \
+gettext \
+libgettextpo \
+python \
+python-pkgconfig \
+;
+
+# UCRT64 packages
+pacman -S --needed --noconfirm \
+mingw-w64-ucrt-x86_64-toolchain \
+mingw-w64-ucrt-x86_64-make \
+mingw-w64-ucrt-x86_64-git \
+mingw-w64-ucrt-x86_64-wget \
+mingw-w64-ucrt-x86_64-gperf \
+mingw-w64-ucrt-x86_64-ncurses \
+mingw-w64-ucrt-x86_64-gettext-tools \
+mingw-w64-ucrt-x86_64-gettext-runtime \
+mingw-w64-ucrt-x86_64-python \
+mingw-w64-ucrt-x86_64-python-pkgconfig \
+mingw-w64-ucrt-x86_64-python-click \
+mingw-w64-ucrt-x86_64-python-pyserial \
+mingw-w64-ucrt-x86_64-python-future \
+mingw-w64-ucrt-x86_64-python-cryptography \
+mingw-w64-ucrt-x86_64-python-pyparsing \
+mingw-w64-ucrt-x86_64-python-pyelftools \
+;
+
+# toolchain
 wget --no-clobber "https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-win32.zip"
 unzip -n "xtensa-lx106-elf-gcc8_4_0-esp-2020r3-win32.zip"
+
+# the actual sdk repo
 git -C ESP8266_RTOS_SDK pull || git clone --recurse-submodules https://github.com/espressif/ESP8266_RTOS_SDK.git
 
 # apply the git diff
